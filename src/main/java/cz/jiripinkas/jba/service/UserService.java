@@ -1,18 +1,22 @@
 package cz.jiripinkas.jba.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cz.jiripinkas.jba.entity.Blog;
 import cz.jiripinkas.jba.entity.Item;
+import cz.jiripinkas.jba.entity.Role;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.repository.BlogRepository;
 import cz.jiripinkas.jba.repository.ItemRepository;
+import cz.jiripinkas.jba.repository.RoleRepository;
 import cz.jiripinkas.jba.repository.UserRepository;
 
 @Service
@@ -27,6 +31,9 @@ public class UserService {
 	
 	@Autowired
 	private ItemRepository itemRepository;
+
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	public List<User> findAll(){
 		return userRepository.findAll();
@@ -50,6 +57,18 @@ public class UserService {
 	}
 
 	public void save(User user) {
+		user.setEnabled(true);
+		BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+		user.setPassword(encode.encode(user.getPassword()));
+		
+		List<Role>roles = new ArrayList<Role>();
+		roles.add(roleRepository.findByName("ROLE_USER"));
+		user.setRoles(roles);
 		userRepository.save(user);
+	}
+
+	public User findOneWithBlogs(String name) {
+		User user = userRepository.findByName(name);
+		return findOneWithBlogs(user.getId());
 	}
 }
