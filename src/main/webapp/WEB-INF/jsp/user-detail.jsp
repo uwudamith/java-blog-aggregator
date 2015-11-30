@@ -3,6 +3,13 @@
 
 <%@ include file="../layout/taglib.jsp"%>
 
+<c:if test="${param.available eq true }">
+	<div class="alert alert-warning">
+		Blog contain items. Delete with items? <a
+			href='<spring:url value="/blog/removeWithItems/${param.ref}.html"></spring:url>' class="pull-right">Remove</a>
+	</div>
+</c:if>
+
 <h1>${user.name}</h1>
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
@@ -49,14 +56,15 @@
 <br />
 
 <script type="text/javascript">
-$(document).ready(function(){
-	$('.nav-tabs a:first').tab('show'); // Select first tab
-});
+	$(document).ready(function() {
+		$('.nav-tabs a:first').tab('show'); // Select first tab
+	});
 </script>
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
 	<c:forEach items="${user.blogs}" var="blog">
-		<li role="presentation"><a href="#blog_${blog.id}" aria-controls="home" role="tab" data-toggle="tab">${blog.name}</a></li>
+		<li role="presentation"><a href="#blog_${blog.id}"
+			aria-controls="home" role="tab" data-toggle="tab">${blog.name}</a></li>
 	</c:forEach>
 </ul>
 <div>
@@ -65,7 +73,10 @@ $(document).ready(function(){
 		<c:forEach items="${user.blogs}" var="blog">
 			<div role="tabpanel" class="tab-pane" id="blog_${blog.id}">
 				<h1>${blog.name}</h1>
-				<p>${blog.url}</p>
+				<p>${blog.url}
+					<a href="<spring:url value="/blog/remove/${blog.id}.html" /> "
+						class="btn btn-danger">Remove Blog</a> 
+				</p>
 				<table class="table table-bordered table-hover table-striped">
 					<thead>
 						<tr>
@@ -83,6 +94,6 @@ $(document).ready(function(){
 					</tbody>
 				</table>
 			</div>
-	</c:forEach>
+		</c:forEach>
 	</div>
 </div>
