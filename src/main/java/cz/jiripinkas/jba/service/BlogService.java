@@ -1,5 +1,7 @@
 package cz.jiripinkas.jba.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,11 @@ public class BlogService {
 	public Blog findOne(int id) {
 		Blog blog = blogRepository.findOne(id);
 		return blog;
+	}
+
+	public List<Blog> findByUser(User user) {
+		List<Blog> blogs = blogRepository.findByUser(user);
+		return blogs;
 	}
 
 }

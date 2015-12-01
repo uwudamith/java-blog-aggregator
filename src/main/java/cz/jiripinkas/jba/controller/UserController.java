@@ -1,6 +1,8 @@
 package cz.jiripinkas.jba.controller;
 
 import java.security.Principal;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +95,23 @@ public class UserController {
 	public String removeBlogWithItems(@PathVariable int id) {
 		blogService.delete(id);
 		return "redirect:/account.html";
+	}
+
+	@RequestMapping("/users/remove/{id}")
+	public String removeUser(@PathVariable int id) {
+		User user = userService.findOne(id);
+		List<Blog> blogs = blogService.findByUser(user);
+		if (blogs.size() > 0) {
+			return "redirect:/users.html?available=true&ref=" + id;
+		} else {
+			userService.delete(id);
+			return "redirect:/users.html";
+		}
+	}
+
+	@RequestMapping("/users/removeWithBlogs/{id}")
+	public String removeUserWithBlogs(@PathVariable int id) {
+		userService.delete(id);
+		return "redirect:/users.html";
 	}
 }
