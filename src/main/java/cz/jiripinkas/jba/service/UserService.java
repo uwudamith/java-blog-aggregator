@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,5 +76,10 @@ public class UserService {
 
 	public void delete(int id) {
 		userRepository.delete(id);
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void delete(@P("user")User user) {
+		userRepository.delete(user);
 	}
 }

@@ -12,18 +12,21 @@
     <label for="name" class="col-sm-2 control-label">Name</label>
     <div class="col-sm-10">
       <form:input path="name" cssClass="form-control" id="txtName" placeholder="Name" />
+      <form:errors path="name"></form:errors>
     </div>
   </div>
   <div class="form-group">
     <label for="email" class="col-sm-2 control-label">Email</label>
     <div class="col-sm-10">
       <form:input path="email" class="form-control" id="txtEmail" placeholder="Email"/>
+      <form:errors path="email"></form:errors>
     </div>
   </div>
   <div class="form-group">
     <label for="password" class="col-sm-2 control-label">Password</label>
     <div class="col-sm-10">
       <form:password path="password" class="form-control" id="txtPassword" placeholder="Password"/>
+      <form:errors path="password"></form:errors>
     </div>
   </div>
   <div class="form-group">

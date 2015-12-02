@@ -34,6 +34,7 @@
 						<div class="col-sm-10">
 							<form:input path="name" cssClass="form-control" id="txtName"
 								placeholder="Name" />
+								<form:errors path="name"></form:errors>
 						</div>
 					</div>
 					<div class="form-group">
@@ -41,6 +42,7 @@
 						<div class="col-sm-10">
 							<form:input path="url" cssClass="form-control" id="txtUrl"
 								placeholder="URL" />
+								<form:errors path="url"></form:errors>
 						</div>
 					</div>
 				</div>
@@ -72,8 +74,8 @@
 	<div class="tab-content">
 		<c:forEach items="${user.blogs}" var="blog">
 			<div role="tabpanel" class="tab-pane" id="blog_${blog.id}">
-				<h1>${blog.name}</h1>
-				<p>${blog.url}
+				<h1> <c:out value="${blog.name}"></c:out> </h1>
+				<p><c:out value="${blog.url}"></c:out> 
 					<a href="<spring:url value="/blog/remove/${blog.id}.html" /> "
 						class="btn btn-danger">Remove Blog</a> 
 				</p>
@@ -87,8 +89,8 @@
 					<tbody>
 						<c:forEach items="${blog.items}" var="item">
 							<tr>
-								<td>${item.title}</td>
-								<td>${item.link}</td>
+								<td><c:out value="${item.title}"></c:out></td>
+								<td><c:out value="${item.link}"></c:out> </td>
 							</tr>
 						</c:forEach>
 					</tbody>

@@ -3,6 +3,8 @@ package cz.jiripinkas.jba.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import cz.jiripinkas.jba.entity.Blog;
@@ -35,6 +37,11 @@ public class BlogService {
 	public List<Blog> findByUser(User user) {
 		List<Blog> blogs = blogRepository.findByUser(user);
 		return blogs;
+	}
+
+	@PreAuthorize("#blog.user.name == authentication.name or hasRole('ROLE_ADMIN')")
+	public void delete(@P("blog")Blog blog) {
+		blogRepository.delete(blog);
 	}
 
 }

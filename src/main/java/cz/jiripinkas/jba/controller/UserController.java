@@ -3,11 +3,14 @@ package cz.jiripinkas.jba.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +63,10 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String doRegister(@ModelAttribute("user") User user) {
+	public String doRegister(@Valid @ModelAttribute("user") User user,BindingResult result) {
+		if(result.hasErrors()){
+			return "user-register";
+		}
 		userService.save(user);
 		return "redirect:/register.html?success=true";
 	}
@@ -73,8 +79,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/account", method = RequestMethod.POST)
-	public String doAddBlog(@ModelAttribute("blog") Blog blog, Principal principle) {
-		String name = principle.getName();
+	public String doAddBlog(Model model,@Valid @ModelAttribute("blog") Blog blog, BindingResult result,Principal principal) {
+		if(result.hasErrors()){
+			return account(model, principal);
+		}
+		String name = principal.getName();
 		blogService.save(blog, name);
 		return "redirect:/account.html";
 	}
@@ -86,14 +95,15 @@ public class UserController {
 		if (count > 0) {
 			return "redirect:/account.html?available=true&ref=" + id;
 		} else {
-			blogService.delete(id);
+			blogService.delete(blog);
 			return "redirect:/account.html";
 		}
 	}
 
 	@RequestMapping("/blog/removeWithItems/{id}")
 	public String removeBlogWithItems(@PathVariable int id) {
-		blogService.delete(id);
+		Blog blog = blogService.findOne(id);
+		blogService.delete(blog);
 		return "redirect:/account.html";
 	}
 
@@ -104,14 +114,15 @@ public class UserController {
 		if (blogs.size() > 0) {
 			return "redirect:/users.html?available=true&ref=" + id;
 		} else {
-			userService.delete(id);
+			userService.delete(user);
 			return "redirect:/users.html";
 		}
 	}
 
 	@RequestMapping("/users/removeWithBlogs/{id}")
 	public String removeUserWithBlogs(@PathVariable int id) {
-		userService.delete(id);
+		User user = userService.findOne(id);
+		userService.delete(user);
 		return "redirect:/users.html";
 	}
 }

@@ -18,7 +18,7 @@
 	<tbody>
 		<c:forEach items="${users}" var="user">
 			<tr>
-				<td>${user.name}</td>
+				<td><c:out value="${user.name}"></c:out></td>
 				<td>
 				<a class="btn btn-info" href="<spring:url value='/users/${user.id}.html'/>">View</a>
 				<a class="btn btn-warning" href="<spring:url value='/users/remove/${user.id}.html'/>">Delete</a>
