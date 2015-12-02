@@ -15,7 +15,7 @@
 	data-target="#myModal">New Blog</button>
 
 <!-- Modal -->
-<form:form commandName="blog" class="form-horizontal">
+<form:form commandName="blog" class="form-horizontal blogForm">
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
@@ -59,6 +59,26 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.nav-tabs a:first').tab('show'); // Select first tab
+		
+		$(".blogForm").validate({
+			rules : {
+				name : {
+					required : true,
+					minlength : 1
+				},
+				url : {
+					required : true,
+					url : true
+				}
+			},
+			highlight:function(element){
+				$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			},
+			unhighlight:function(element){
+				$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+			}
+		});
+		
 	});
 </script>
 <!-- Nav tabs -->
