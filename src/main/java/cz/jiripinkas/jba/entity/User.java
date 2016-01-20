@@ -12,7 +12,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.ManyToAny;
 import org.hibernate.validator.constraints.Email;
 
 import cz.jiripinkas.jba.annotation.UniqueUsername;
